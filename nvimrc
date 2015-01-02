@@ -41,6 +41,14 @@ Plugin 'gmarik/Vundle.vim'
 " Color schemes
 Plugin 'godlygeek/csapprox' " Make terminal vim works with gui only colorschemes
 Plugin 'chriskempson/base16-vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'mattn/emmet-vim'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'ervandew/supertab'
+Plugin 'tomtom/tcomment_vim'
+
 
 call vundle#end()
 
