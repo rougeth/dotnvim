@@ -30,27 +30,50 @@ set nocompatible " disable Vi compatibility
 set encoding=utf-8 " define encoding
 
 
-" 1.5 Plugins
+" 1.1 NeoBundle Core (vim-bootstrap)
+" ==================================
+set runtimepath+=~/.nvim/bundle/neobundle.vim/
+let neobundle_readme=expand('~/.nvim/bundle/neobundle.vim/README.md')
+
+if !filereadable(neobundle_readme)
+    echo "Installing NeoBundle..."
+    echo ""
+    silent !mkdir -p ~/.nvim/bundle
+    silent !git clone https://github.com/Shougo/neobundle.vim ~/.nvim/bundle/neobundle.vim/
+endif
+
+call neobundle#begin(expand('~/.nvim/bundle/'))
+
+" 1.2 Plugins
 " ===========
-filetype off " Vundle required
 
-set rtp+=~/.nvim/bundle/Vundle.vim
-call vundle#begin()
+NeoBundle 'godlygeek/csapprox'
+NeoBundle 'chriskempson/base16-vim'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'tpope/vim-commentary'
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'sheerun/vim-polyglot'
+NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'scrooloose/syntastic'
 
-Plugin 'gmarik/Vundle.vim'
-" Color schemes
-Plugin 'godlygeek/csapprox' " Make terminal vim works with gui only colorschemes
-Plugin 'chriskempson/base16-vim'
-Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'mattn/emmet-vim'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'ervandew/supertab'
-Plugin 'tomtom/tcomment_vim'
+" Python
+NeoBundle 'davidhalter/jedi-vim'
 
+" C
+NeoBundle 'vim-scripts/c.vim'
 
-call vundle#end()
+" HTML
+NeoBundle 'amirh/HTML-AutoCloseTag'
+NeoBundle 'hail2u/vim-css3-syntax'
+NeoBundle 'gorodinskiy/vim-coloresque'
+NeoBundle 'mattn/emmet-vim'
+
+call neobundle#end()
+filetype plugin indent on
+
+NeoBundleCheck
 
 
 " 2 Moving around, searching and patterns
@@ -145,3 +168,16 @@ nnoremap <c-l> <c-w><c-l>
 au BufReadPost * if line("'\'") > 0|if line("'\'") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 
 autocmd BufWritePre * :%s/\s\+$//e " automatically remove all trailing whitespace
+
+if has('python')
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    sys.path.insert(0, project_base_dir)
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
+endif
